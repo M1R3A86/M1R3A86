@@ -1,10 +1,44 @@
-[
-  {
-    "img": "https://fullkade.com/wp-content/uploads/2018/12/ic-apk-com.samsung.android.themestore.png",
-    "text": "ipon"
-  },
-  {
-    "text": "iiiii",
-    "img": "https://fullkade.com/wp-content/uploads/2018/12/ic-apk-com.samsung.android.themestore.png"
+<?php
+ 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    
+ function get_data() {
+  $name = $_POST['name'];
+  $file_name='StudentsData'. '.json';
+
+  if(file_exists("$file_name")) {
+   $current_data=file_get_contents("$file_name");
+   $array_data=json_decode($current_data, true);
+       
+   $extra=array(
+    'name' => $_POST['name'],
+    'title' => $_POST['title'],
+    'text' => $_POST['text'],
+   );
+   $array_data[]=$extra;
+   echo "file exist<br/>";
+   return json_encode($array_data);
   }
-]
+  else {
+   $datae=array();
+   $datae[]=array(
+    'Name' => $_POST['name'],
+    'Branch' => $_POST['branch'],
+    'Year' => $_POST['year'],
+   );
+   echo "file not exist<br/>";
+   return json_encode($datae);
+  }
+ }
+
+ $file_name='StudentsData'. '.json';
+ 
+ if(file_put_contents("$file_name", get_data())) {
+  echo 'success';
+ }    
+ else {
+  echo 'There is some error';    
+ }
+}
+ 
+?>
